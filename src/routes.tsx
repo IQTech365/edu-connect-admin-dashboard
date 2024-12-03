@@ -13,6 +13,10 @@ import AddParentsForm from "./screens/parents/AddParents";
 import ParentsList from "./screens/parents";
 import HeadOfDepepartmentList from "./screens/headOfDepartment";
 import AddHeadOfDepartmentForm from "./screens/headOfDepartment/AddHeadOfDepartment";
+import AddProduct from "./screens/add-product/AddProduct";
+import ProductList from "./screens/add-product";
+import OrderDetails from "./screens/order-details/OrderDetails";
+import Login from "./screens/login/Login";
 
 const routes = createBrowserRouter([
   {
@@ -70,6 +74,18 @@ const routes = createBrowserRouter([
       {
         path: "/add-head-of-dept",
         element:<AddHeadOfDepartmentForm/>
+      },
+      {
+        path: "/add-product",
+        element:<AddProduct/>
+      },
+      {
+        path: "/product-list",
+        element:<ProductList/>
+      },
+      {
+        path: "/order-detail",
+        element:<OrderDetails/>
       },
     ],
     

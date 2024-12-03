@@ -7,11 +7,14 @@ import { LuUserCog } from "react-icons/lu";
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { LuPackagePlus } from "react-icons/lu";
+import { BsShopWindow } from "react-icons/bs";
 
 const Sidebar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [openStudenttab, setOpenStudentTab] = useState(false);
   const [openParentstab, setOpenParentsTab] = useState(false);
+  const [openVendorsTab, setOpenVendorsTab] = useState(false)
 
   const handleToggle = () => {
     setOpenMenu(!openMenu);
@@ -22,6 +25,9 @@ const Sidebar = () => {
   const handleToggleParentTab = () => {
     setOpenParentsTab(!openParentstab);
   };
+  const handleToggleVendorsTab = () => {
+    setOpenVendorsTab(!openVendorsTab)
+  }
 
   return (
     <div className="hidden md:block min-h-[91vh] bg-white p-2 shadow-r-lg">
@@ -142,6 +148,37 @@ const Sidebar = () => {
             <span className="text-md text-white">Head Of Dept.</span>
           </li>
         </NavLink>
+      </ul>
+        {/* Vendors tab */}
+        <ul className="mb-1">
+        <li
+          className="  p-2 bg-[#4D365B] rounded-md"
+          onClick={() => handleToggleVendorsTab()}
+        >
+          <div className={"flex justify-between"}>
+            <div className="flex items-center gap-2 ">
+              <BsShopWindow size={22} color="#fff" />
+              <span className="text-md text-white">Vendors</span>
+            </div>
+            {openVendorsTab ? (
+              <GoChevronUp size={22} color="#fff"/>
+            ) : (
+              <GoChevronDown size={22} color="#fff" />
+            )}
+          </div>
+        </li>
+        {openVendorsTab ? (
+          <div className="rounded-md bg-gray-300  p-2 ">
+            <ul>
+              <NavLink to={"product-list"}>
+                <li className="flex items-center gap-2 cursor-pointer p-1 bg-[#b997cd] rounded-md m-b text-[#4D365B]">
+                  <LuPackagePlus size={22} color="#4D365B" />
+                  Product List
+                </li>
+              </NavLink>
+            </ul>
+          </div>
+        ) : null}
       </ul>
       {/* {menuItems.map((item, index) => (
         <ul key={index} className="mb-2">

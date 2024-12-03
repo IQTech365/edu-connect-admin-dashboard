@@ -1,0 +1,11 @@
+Customer Name
+Customer Address
+Payment --> advance and COD
+School
+Order No
+Category 
+Sub Category
+Size
+Color
+Quantity
+Product Image

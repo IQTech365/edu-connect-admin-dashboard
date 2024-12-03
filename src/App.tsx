@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <Header />
-      <div className=" flex ">
+      <div className=" flex">
         <div className="w-[0] md:w-[10%] lg:w-[16%]" >
           <Sidebar />
         </div>

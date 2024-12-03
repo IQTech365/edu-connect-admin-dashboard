@@ -17,6 +17,8 @@ const Button:React.FC<IButtonProp> = (props: any) => {
                 return 'primarybtn button'
             case BUTTON_TYPES.SECONDARY:
                 return 'secondarybtn button';
+            case BUTTON_TYPES.PURPLE:
+                return 'purplebtn button'
             default:
                 return 'tertiarybtn button'
         }

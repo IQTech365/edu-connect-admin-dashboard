@@ -8,6 +8,7 @@ export default {
     extend: {
       colors: {
         headingTxt: '#4D365B',
+        secondaryPurple:'#ECE3F2',
         // current: 'currentColor',
         // 'white': '#ffffff',
         // 'purple': '#3f3cbb',

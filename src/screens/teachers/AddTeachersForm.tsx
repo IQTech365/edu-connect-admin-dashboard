@@ -2,7 +2,7 @@ import { MdClose } from "react-icons/md";
 import Input from "../../components/input";
 import Button from "../../components/button/index";
 import { BUTTON_TYPES } from "../../components/button/data/button";
-import { PiFileArrowUpLight } from "react-icons/pi";
+// import { PiFileArrowUpLight } from "react-icons/pi";
 import { useRef, useState } from "react";
 
 type TProps = {

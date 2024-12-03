@@ -1,8 +1,10 @@
 :root {
+    --purple:#4D365B;
     --blue: #24a0ed;
     --hoverBlue: #1174b1;
     --green: #33c02b;
     --red: #ED2F3B;
+    --hoverPurple :#783a9f;
 }
 
 .button {
@@ -23,8 +25,21 @@
     transition: all 0.3s ease-in-out;
 }
 
+.purplebtn {
+    background-color: var(--purple);
+    padding: 8px 14px;
+    color: #fff;
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    transition: all 0.3s ease-in-out;
+}
+
 .primarybtn:hover {
     background-color: var(--hoverBlue);
+}
+.purplebtn:hover {
+    background-color: var(--hoverPurple);
 }
 
 .secondarybtn {
