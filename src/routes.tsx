@@ -17,78 +17,84 @@ import AddProduct from "./screens/add-product/AddProduct";
 import ProductList from "./screens/add-product";
 import OrderDetails from "./screens/order-details/OrderDetails";
 import Login from "./screens/login/Login";
+import ProtectedRoute from "./ProtectedRoutes";
 
 const routes = createBrowserRouter([
+  { path: "/", element: <Login /> },
+  { path: "/signin", element: <Login /> },
   {
-    path: "/",
-    element: <App />,
+    path: "/dashboard",
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     children: [
       {
-        path: "dashboard-home",
-        element:<Dashboard/>
+        path: "dashboard",
+        element: <Dashboard />,
       },
       {
-        path: "schools",
-        element:<Schools/>
+        path: "/dashboard/schools",
+        element: <Schools />,
       },
       {
-        path: "/add-school",
-        element:<AddSchoolForm/>
+        path: "/dashboard/add-school",
+        element: <AddSchoolForm />,
       },
       {
-        path: "/principal-list",
-        element:<PrincipalList/>
+        path: "/dashboard/principal-list",
+        element: <PrincipalList />,
       },
       {
-        path: "/add-principal",
-        element:<AddPrincipalForm/>
+        path: "/dashboard/add-principal",
+        element: <AddPrincipalForm />,
       },
       {
-        path: "/teachers-list",
-        element:<TeachersList/>
+        path: "/dashboard/teachers-list",
+        element: <TeachersList />,
       },
       {
-        path: "/add-teachers",
-        element:<AddTeacherFrom/>
+        path: "/dashboard/add-teachers",
+        element: <AddTeacherFrom />,
       },
       {
-        path: "/students-list",
-        element:<StudentsList/>
+        path: "/dashboard/students-list",
+        element: <StudentsList />,
       },
       {
-        path: "/add-students",
-        element:<AddStudentForm/>
+        path: "/dashboard/add-students",
+        element: <AddStudentForm />,
       },
       {
-        path: "/add-parents",
-        element:<AddParentsForm/>
+        path: "/dashboard/add-parents",
+        element: <AddParentsForm />,
       },
       {
-        path: "/parents-list",
-        element:<ParentsList/>
+        path: "/dashboard/parents-list",
+        element: <ParentsList />,
       },
       {
-        path: "/head-of-dept-list",
-        element:<HeadOfDepepartmentList/>
+        path: "/dashboard/head-of-dept-list",
+        element: <HeadOfDepepartmentList />,
       },
       {
-        path: "/add-head-of-dept",
-        element:<AddHeadOfDepartmentForm/>
+        path: "/dashboard/add-head-of-dept",
+        element: <AddHeadOfDepartmentForm />,
       },
       {
-        path: "/add-product",
-        element:<AddProduct/>
+        path: "/dashboard/add-product",
+        element: <AddProduct />,
       },
       {
-        path: "/product-list",
-        element:<ProductList/>
+        path: "/dashboard/product-list",
+        element: <ProductList />,
       },
       {
-        path: "/order-detail",
-        element:<OrderDetails/>
+        path: "/dashboard/order-detail",
+        element: <OrderDetails />,
       },
     ],
-    
   },
 ]);
 

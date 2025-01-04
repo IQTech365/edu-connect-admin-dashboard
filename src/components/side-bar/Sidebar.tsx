@@ -34,7 +34,7 @@ const Sidebar = () => {
       <h1 className="text-center text-lg font-semibold my-2">Menu-Items</h1>
       {/* Dashboard tab */}
       <ul className="mb-1">
-        <NavLink to={"dashboard-home"}>
+        <NavLink to={"dashboard"}>
           <li className="flex items-center gap-2 p-2 bg-[#4D365B] rounded-md">
             <MdOutlineDashboard size={22} color="#fff"/>
             <span className="text-md text-white">Dashboard</span>

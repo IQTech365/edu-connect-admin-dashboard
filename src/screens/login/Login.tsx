@@ -3,7 +3,16 @@ import Logo from '../../assets/images/logo.png'
 import Input from '../../components/input'
 import Button from "../../components/button/index";
 import { BUTTON_TYPES } from "../../components/button/data/button";
+import { useAuth } from '../../provider/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 const Login = () => {
+    const { login } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogin = () => {
+        login("vijay", "123456")
+        navigate('/dashboard');
+    }
     return (
         <div className="w-full h-screen flex flex-col items-center justify-center px-5">
                     <img src={Logo} alt='image' className=' md:hidden block w-1/2 self-center mb-4' />
@@ -32,8 +41,8 @@ const Login = () => {
                                 value=""
                             />
                             <div className="flex items-center justify-center my-2">
-                                <Button type={BUTTON_TYPES.PURPLE} btnText="Submit" />
-
+                                {/* <Button type={BUTTON_TYPES.PURPLE} btnText="Submit" onClick={() => login("vijay", "123456")} /> */}
+                                <button onClick={handleLogin}>Submit</button>
                             </div>
                         </form>
                     </div>
