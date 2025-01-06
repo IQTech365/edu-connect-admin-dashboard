@@ -37,7 +37,21 @@ export interface ISignInPayload {
     password: string;
 }
 
-export interface ISignInResponse extends IApiResponse<IUser> {}
+
+export interface ISignInResponse extends IApiResponse<IUser> { }
+export interface IAddSchoolPayload {
+    name: string;
+    address: string;
+    pincode: string;
+    city: string;
+    state: string;
+    country: string;
+};
+
+export interface IAddSchoolResponse {
+    success: boolean;
+    message: string;
+}
 
 
 

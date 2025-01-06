@@ -10,12 +10,14 @@ interface IDropDownProps {
   label?: string;
   placeholderText?: string;
   options: TOption[];
+  onChange?: (selectedOption: TOption | null) => void;
 }
 
 const DropDwon: React.FC<IDropDownProps> = ({
   label,
   placeholderText,
   options,
+  onChange
 }) => {
   const customStyles: StylesConfig<TOption> = {
     control: (base, state) => ({
@@ -40,6 +42,7 @@ const DropDwon: React.FC<IDropDownProps> = ({
         options={options}
         placeholder={placeholderText}
         styles={customStyles}
+        onChange={onChange}
         className="focus:outline-none"
       />
     </div>
