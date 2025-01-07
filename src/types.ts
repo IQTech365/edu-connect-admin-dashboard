@@ -91,7 +91,7 @@ export interface IAddTeacherPayload {
 export interface IAddTeacherResponse {
     success: boolean;
     message: string;
-    error :string
+    error: string
 }
 
 // Student interface
@@ -114,7 +114,27 @@ export interface IAddStudentPayload {
 
 export interface IAddStudentResponse {
     message: string;
-    error :string;
+    error: string;
+    success: boolean;
+}
+
+// Pricipal interface
+export interface IAddPrincipalPayload {
+    name: string;
+    email: string;
+    phone: number;
+    password: string;
+    avatar: string;
+    address: string;
+    pincode: number;
+    city: string;
+    state: string;
+    country: string;
+    school: any;
+}
+
+export interface IPrincipalResponse {
+    message: string;
     success: boolean;
 }
 

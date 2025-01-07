@@ -61,12 +61,15 @@ const DropDown = () => {
 
 type ViewPrincipalProps = {
   principalNo: number;
+  schoolId: string;
 };
 
-const ViewPrincipal: React.FC<ViewPrincipalProps> = ({ principalNo }) => {
+const ViewPrincipal: React.FC<ViewPrincipalProps> = ({ principalNo, schoolId }) => {
+  console.log(schoolId);
+  
   if (principalNo <= 0) {
     return (
-      <NavLink to={'/dashboard/principal-list'} className="flex items-center gap-2 bg-[#b997cd44] px-3 py-2 rounded-sm cursor-pointer">
+      <NavLink to={`/dashboard/principal-list?schoolId=${schoolId}`} className="flex items-center gap-2 bg-[#b997cd44] px-3 py-2 rounded-sm cursor-pointer">
         <IoMdAdd color="#4D365B" size={15} />
         <p className="text-[#4D365B] font-medium">Add Principal</p>
       </NavLink>
@@ -74,7 +77,7 @@ const ViewPrincipal: React.FC<ViewPrincipalProps> = ({ principalNo }) => {
   }
 
   return (
-    <NavLink to={'/dashboard/principal-list'} className="flex items-center gap-2 bg-[#b997cd44] px-3 py-2 rounded-sm cursor-pointer">
+    <NavLink to={`/dashboard/principal-list?schoolId=${schoolId}`} className="flex items-center gap-2 bg-[#b997cd44] px-3 py-2 rounded-sm cursor-pointer">
       <FaRegEye color="#4D365B" size={15} />
       <p className="text-[#4D365B] font-medium">Principal</p>
     </NavLink>
@@ -198,10 +201,12 @@ const Schools = () => {
             city: school.city,
             state: school.state,
             pincode: school.pincode,
-            principal: <ViewPrincipal principalNo={school.principals.length} />,
+            principal: <ViewPrincipal principalNo={school.principals.length} schoolId={school._id} />,
             action: <DropDown />,
           }));
           setData(formattedData);
+          console.log(formattedData);
+
         } else {
           console.error('Failed to fetch schools');
         }
@@ -212,7 +217,7 @@ const Schools = () => {
       }
     };
     fetchSchools();
-  }, []);
+  }, [showModal]);
 
 
   console.log(data);
