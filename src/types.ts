@@ -55,6 +55,50 @@ export interface IAddSchoolResponse {
 }
 
 
+// Teacher interface
+export interface IAddTeacherPayload {
+    name: string;
+    email: string;
+    phone: string;
+    password: string;
+    // avatar: string;
+    address: string;
+    pincode: string;
+    city: string;
+    state: string;
+    country: string;
+    qualification: string;
+};
+
+export interface IAddTeacherResponse {
+    success: boolean;
+    message: string;
+    error :string
+}
+
+// Student interface
+export interface IAddStudentPayload {
+    name: string;
+    email: string;
+    phone: string;
+    password: string;
+    classes: string;
+    section: string;
+    department: string;
+    rollNumber: string;
+    address: string;
+    pincode: string;
+    city: string;
+    state: string;
+    country: string;
+    avatar: string;
+};
+
+export interface IAddStudentResponse {
+    success: boolean;
+    message: string;
+    error :string
+}
 
 /**
  * ************************************************************
