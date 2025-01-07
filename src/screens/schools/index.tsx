@@ -66,7 +66,7 @@ type ViewPrincipalProps = {
 const ViewPrincipal: React.FC<ViewPrincipalProps> = ({ principalNo }) => {
   if (principalNo <= 0) {
     return (
-      <NavLink to={'/principal-list'} className="flex items-center gap-2 bg-[#b997cd44] px-3 py-2 rounded-sm cursor-pointer">
+      <NavLink to={'/dashboard/principal-list'} className="flex items-center gap-2 bg-[#b997cd44] px-3 py-2 rounded-sm cursor-pointer">
         <IoMdAdd color="#4D365B" size={15} />
         <p className="text-[#4D365B] font-medium">Add Principal</p>
       </NavLink>
@@ -74,12 +74,13 @@ const ViewPrincipal: React.FC<ViewPrincipalProps> = ({ principalNo }) => {
   }
 
   return (
-    <NavLink to={'/principal-list'} className="flex items-center gap-2 bg-[#b997cd44] px-3 py-2 rounded-sm cursor-pointer">
+    <NavLink to={'/dashboard/principal-list'} className="flex items-center gap-2 bg-[#b997cd44] px-3 py-2 rounded-sm cursor-pointer">
       <FaRegEye color="#4D365B" size={15} />
       <p className="text-[#4D365B] font-medium">Principal</p>
     </NavLink>
   );
 };
+
 
 interface Row {
   name: string;
@@ -140,6 +141,8 @@ const columns: Column[] = [
   },
 ];
 
+
+
 const rows: Row[] = [
   {
     avatar: "G",
@@ -176,41 +179,43 @@ const customStyles = {
   },
 };
 
+
 const Schools = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
-
-
-  const [data, setData] = useState<ISchool[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
-    const fetchShowrooms = async () => {
+    const fetchSchools = async () => {
       try {
         const response = await SchoolService.GetAllSchools();
-        const { status, schools, count, message } = response;
-        console.log(message);
-        console.log('schools-----', schools);
-        console.log(status);
-
+        const { status, schools } = response;
 
         if (status) {
-          setData(schools);
+          const formattedData = schools.map((school) => ({
+            avatar: school.name.charAt(0),
+            name: school.name,
+            city: school.city,
+            state: school.state,
+            pincode: school.pincode,
+            principal: <ViewPrincipal principalNo={school.principals.length} />,
+            action: <DropDown />,
+          }));
+          setData(formattedData);
         } else {
-          console.log('nxs');
-
+          console.error('Failed to fetch schools');
         }
       } catch (error) {
-        console.log('bycsvuycv');
-
+        console.error('Error fetching schools:', error);
       } finally {
         setLoading(false);
       }
     };
-
-    fetchShowrooms();
+    fetchSchools();
   }, []);
 
-  console.log("Data---", data);
+
+  console.log(data);
 
 
   return (
@@ -229,7 +234,7 @@ const Schools = () => {
         <div className="p-2 shadow-md">
           <DataTable
             columns={columns as any}
-            data={rows}
+            data={data}
             //   selectableRows
             selectableRowsHighlight
             highlightOnHover

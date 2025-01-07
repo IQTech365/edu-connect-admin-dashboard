@@ -288,9 +288,7 @@ const PrincipalList = () => {
                   <p className="text-2xl font-medium text-headingTxt">{item.name}</p>
                   <p>Email :- {item.email}</p>
                   <p>Phone :- +91 {item.phone}</p>
-                </div>
-                <div className="">
-                  <p>{item.city}</p>
+                  <p>City :- {item.city}</p>
                 </div>
               </div>
             );
