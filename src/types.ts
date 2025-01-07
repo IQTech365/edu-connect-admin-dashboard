@@ -51,6 +51,7 @@ export interface IAddSchoolPayload {
 export interface IAddSchoolResponse {
     success: boolean;
     message: string;
+    error :string
 }
 
 

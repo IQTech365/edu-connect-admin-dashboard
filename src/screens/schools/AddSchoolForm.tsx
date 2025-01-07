@@ -132,6 +132,7 @@ const AddSchoolForm: React.FC<TProps> = ({ onClose }) => {
             <Button
               type={BUTTON_TYPES.PRIMARY}
               btnText={loading ? "Submitting..." : "Submit"}
+              onClick={handleSubmit}
             // disabled={loading}
             />
           </div>

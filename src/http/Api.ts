@@ -3,7 +3,7 @@ import {HttpClient} from './HttpClient';
 
 export class Api extends HttpClient {
   private static classInstance?: Api;
-  private static baseUrl: string = `https://api-v2.epackbook.in`;
+  private static baseUrl: string = `http://localhost:4000/api/v1`;
 
   private constructor() {
     super(Api.baseUrl);

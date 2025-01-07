@@ -1,5 +1,5 @@
 const SIGNIN: string = ``;
-const ADD_SCHOOL: string = ``;
+const ADD_SCHOOL: string = `/school/school-register`;
 
 export {
     SIGNIN,
