@@ -9,100 +9,136 @@ import * as SchoolService from "../../service/school.service";
 type TProps = {
   onClose?: () => void;
 };
+
 const AddSchoolForm: React.FC<TProps> = ({ onClose }) => {
-  const [name, setName] = useState<string>("");
-  const [address, setAddress] = useState<string>("");
-  const [pincode, setPincode] = useState<string>("");
-  const [city, setCity] = useState<string>("");
-  const [state, setState] = useState<string>("");
-  const [country, setCountry] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    address: "",
+    pincode: "",
+    city: "",
+    state: "",
+    country: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handle
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-  const handleSubmit = async (e) => {
+  console.info(formData);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null); // Clear previous errors
+
+    const { name, address, pincode, city, state, country } = formData;
+
+    // Basic validation
+    if (!name || !address || !pincode || !city || !state || !country) {
+      setError("All fields are required.");
+      return;
+    }
+
     const payload: IAddSchoolPayload = {
       name,
+      address,
       pincode,
       city,
       state,
       country,
-      address,
-    }
+    };
+
+    console.log(payload);
+    
+
     try {
       setLoading(true);
       const result = await SchoolService.AddSchool(payload);
-      const message = result.message;
-    } catch (error) {
-
+      alert(result.message || "School added successfully!");
+      if (onClose) onClose(); // Close the modal on success
+    } catch (err: any) {
+      setError(err.message || "Failed to add school. Please try again.");
     } finally {
       setLoading(false);
     }
-  }
+  };
+
   return (
     <>
-      {/*Close Icon */}
-      <div className="flex justify-between  bg-slate-500 p-[17px] shadow-b-lg">
+      {/* Close Icon */}
+      <div className="flex justify-between bg-slate-500 p-[17px]">
         <h3 className="text-2xl font-medium">Add School Form</h3>
         <MdClose size={24} onClick={onClose} className="cursor-pointer" />
       </div>
-      {/*Form */}
+      {/* Form */}
       <div className="bg-white p-6">
-        <form className="w-full ">
-          <div className="grid grid-cols-1 gap-3 mb-1  rounded-lg ">
-            <div className="">
-              <Input
-                label="School Name"
-                placeholderText="Enter School Name"
-                onChangeText={() => { }}
-                value=""
-              />
-            </div>
+        <form onSubmit={handleSubmit} className="w-full">
+          <div className="grid grid-cols-1 gap-3 mb-1 rounded-lg">
+            <Input
+              label="School Name"
+              placeholderText="Enter School Name"
+              name="name"
+              onChangeText={handleChange}
+              value={formData.name}
+            />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4   rounded-lg ">
-            <div className="">
-              <Input
-                label="Pincode"
-                placeholderText="Enter pincode"
-                onChangeText={() => { }}
-                value=""
-              />
-            </div>
-            <div className="">
-              <Input
-                label="City"
-                placeholderText="Enter school city"
-                onChangeText={() => { }}
-                value=""
-              />
-            </div>
-            <div className="">
-              <Input
-                label="State"
-                placeholderText="Enter school state"
-                onChangeText={() => { }}
-                value=""
-              />
-            </div>
-            <div className="">
-              <Input
-                label="Country"
-                placeholderText="Enter school country"
-                onChangeText={() => { }}
-                value=""
-              />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-lg">
+            <Input
+              label="Pincode"
+              placeholderText="Enter Pincode"
+              name="pincode"
+              onChangeText={handleChange}
+              value={formData.pincode}
+            />
+            <Input
+              label="City"
+              placeholderText="Enter School City"
+              name="city"
+              onChangeText={handleChange}
+              value={formData.city}
+            />
+            <Input
+              label="State"
+              placeholderText="Enter School State"
+              name="state"
+              onChangeText={handleChange}
+              value={formData.state}
+            />
+            <Input
+              label="Country"
+              placeholderText="Enter School Country"
+              name="country"
+              onChangeText={handleChange}
+              value={formData.country}
+            />
           </div>
-          <div className="flex flex-col mt-1">
-            <span className="text-[#b2b2b2]">Address</span>
-            <textarea className="rounded-[5px] border-solid border-[1px] border-[#c5c5c5] focus:outline-none focus:ring-1 focus:ring-blue-200" />
+          <div className="flex flex-col mt-4">
+            <label className="text-[#b2b2b2] mb-1">Address</label>
+            <textarea
+              className="rounded-[5px] border border-[#c5c5c5] focus:outline-none focus:ring-1 focus:ring-blue-200"
+              name="address"
+              placeholder="Enter School Address"
+              value={formData.address}
+              onChange={handleChange}
+            />
+          </div>
+          {error && <p className="text-red-500 mt-2">{error}</p>}
+          <div className="flex items-center justify-center my-4">
+            <Button
+              type={BUTTON_TYPES.PRIMARY}
+              btnText={loading ? "Submitting..." : "Submit"}
+            // disabled={loading}
+            />
           </div>
         </form>
-        <div className="flex items-center justify-center my-2">
-          <Button type={BUTTON_TYPES.PRIMARY} btnText="Submit" />
-        </div>
       </div>
     </>
   );
 };
+
 export default AddSchoolForm;

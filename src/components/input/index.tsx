@@ -9,6 +9,7 @@ interface IInputProps {
   style?: any;
   isRequired?: boolean;
   value: string;
+  name: string;
 }
 
 const Input: React.FC<IInputProps> = ({
@@ -17,6 +18,7 @@ const Input: React.FC<IInputProps> = ({
   isRequired = false,
   placeholderText,
   onChangeText,
+  name
 }) => {
   return (
     <div>
@@ -30,6 +32,7 @@ const Input: React.FC<IInputProps> = ({
         }
         placeholder={placeholderText}
         onChange={onChangeText}
+        name={name}
       />
     </div>
   );
