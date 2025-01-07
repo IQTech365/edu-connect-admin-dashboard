@@ -51,7 +51,25 @@ export interface IAddSchoolPayload {
 export interface IAddSchoolResponse {
     success: boolean;
     message: string;
-    error :string
+    error: string
+}
+
+export interface ISchool {
+    _id: string;
+    name: string;
+    address: string;
+    pincode: string;
+    city: string;
+    state: string;
+    country: string;
+    principals: [];
+}
+
+export interface IGetAllSchoolsRespose {
+    status: boolean;
+    count: number;
+    schools: any[];
+    message: string;
 }
 
 
