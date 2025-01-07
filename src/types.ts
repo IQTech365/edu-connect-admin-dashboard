@@ -84,20 +84,20 @@ export interface IAddStudentPayload {
     password: string;
     classes: string;
     section: string;
-    department: string;
+    // department: string;
     rollNumber: string;
     address: string;
     pincode: string;
     city: string;
     state: string;
     country: string;
-    avatar: string;
+    // avatar: string;
 };
 
 export interface IAddStudentResponse {
-    success: boolean;
     message: string;
-    error :string
+    error :string;
+    success: boolean;
 }
 
 /**
