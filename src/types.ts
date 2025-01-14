@@ -113,14 +113,23 @@ export interface IPrincipalResponse {
     success: boolean;
 }
 
-export interface IGetAllPricipalRespose {
-    message: string;
-    success: boolean;
-    principals: any[];
-    count: number;
+
+// Parent interface
+export interface IAddParentPayload {
+    name: string;
+    email: string;
+    phone: number;
+    password: string;
+    avatar: string;
+    address: string;
+    pincode: number;
+    city: string;
+    state: string;
+    country: string;
+    school: any;
 }
 
-export interface IPrincipalDeleteResponse {
+export interface IParentResponse {
     message: string;
     success: boolean;
 }
