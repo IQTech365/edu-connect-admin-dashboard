@@ -33,6 +33,7 @@ const Input: React.FC<IInputProps> = ({
         placeholder={placeholderText}
         onChange={onChangeText}
         name={name}
+        value={value}
       />
     </div>
   );

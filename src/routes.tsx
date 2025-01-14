@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import Dashboard from "./components/dashboard/Dashboard";
 import Schools from "./screens/schools";
-import AddSchoolForm from "./screens/schools/AddSchoolForm";
+import AddSchoolForm from "./screens/schools/SchoolForm";
 import PrincipalList from "./screens/principal";
 import AddPrincipalForm from "./screens/principal/AddPrincipalForm";
 import TeachersList from "./screens/teachers";
@@ -43,7 +43,7 @@ const routes = createBrowserRouter([
         element: <AddSchoolForm />,
       },
       {
-        path: "/dashboard/principal-list",
+        path: "/dashboard/principal-list/:schoolID",
         element: <PrincipalList />,
       },
       {

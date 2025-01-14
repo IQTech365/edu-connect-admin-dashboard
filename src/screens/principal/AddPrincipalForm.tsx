@@ -26,6 +26,9 @@ const AddPrincipalForm: React.FC<TProps> = ({ onClose }) => {
     address: "",
   });
 
+  const {schoolID} = useParams();
+  console.log(schoolID);
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,11 +42,9 @@ const AddPrincipalForm: React.FC<TProps> = ({ onClose }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(null); // Clear previous errors
+    setError(null);
 
     const { name, email, phone, password, pincode, city, state, country, address } = formData;
-
-    // Basic validation
     if (!name || !email || !phone || !password || !pincode || !city || !state || !country || !address) {
       setError("All fields are required.");
       return;
@@ -60,12 +61,12 @@ const AddPrincipalForm: React.FC<TProps> = ({ onClose }) => {
       state,
       country,
       address,
-      school: schoolId
+      school: schoolID
     };
 
     try {
       setLoading(true);
-      const result = await PrincipalService.AddPrincipal(payload);
+      const result = await PrincipalService.AddPrincipal(payload, schoolID as string);
       alert(result.message || "Principal added successfully!");
       if (onClose) onClose();
     } catch (err: any) {

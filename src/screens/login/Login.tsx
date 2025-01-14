@@ -104,8 +104,8 @@ const Login = () => {
                                 value={password}
                             />
                             <div className="flex items-center justify-center my-2">
-                                <Button type={BUTTON_TYPES.PURPLE} btnText="Submit" onClick={() => login("vijay", "123456")} />
-                                <button onClick={handleLogin}>Submit</button>
+                                <Button type={BUTTON_TYPES.PURPLE} btnText="Submit" onClick={handleLogin} />
+                                {/* <button onClick={handleLogin}>Submit</button> */}
                             </div>
                         </form>
                     </div>

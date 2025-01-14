@@ -54,16 +54,7 @@ export interface IAddSchoolResponse {
     error: string
 }
 
-export interface ISchool {
-    _id: string;
-    name: string;
-    address: string;
-    pincode: string;
-    city: string;
-    state: string;
-    country: string;
-    principals: [];
-}
+
 
 export interface IGetAllSchoolsRespose {
     status: boolean;
@@ -72,27 +63,6 @@ export interface IGetAllSchoolsRespose {
     message: string;
 }
 
-
-// Teacher interface
-export interface IAddTeacherPayload {
-    name: string;
-    email: string;
-    phone: string;
-    password: string;
-    // avatar: string;
-    address: string;
-    pincode: string;
-    city: string;
-    state: string;
-    country: string;
-    qualification: string;
-};
-
-export interface IAddTeacherResponse {
-    success: boolean;
-    message: string;
-    error: string
-}
 
 // Student interface
 export interface IAddStudentPayload {
@@ -112,6 +82,11 @@ export interface IAddStudentPayload {
     // avatar: string;
 };
 
+
+
+
+
+// 
 export interface IAddStudentResponse {
     message: string;
     error: string;
@@ -134,6 +109,18 @@ export interface IAddPrincipalPayload {
 }
 
 export interface IPrincipalResponse {
+    message: string;
+    success: boolean;
+}
+
+export interface IGetAllPricipalRespose {
+    message: string;
+    success: boolean;
+    principals: any[];
+    count: number;
+}
+
+export interface IPrincipalDeleteResponse {
     message: string;
     success: boolean;
 }

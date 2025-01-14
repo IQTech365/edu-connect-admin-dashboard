@@ -3,14 +3,18 @@ import Input from "../../components/input";
 import Button from "../../components/button/index";
 import { BUTTON_TYPES } from "../../components/button/data/button";
 import { IAddSchoolPayload } from "../../types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as SchoolService from "../../service/school.service";
+import { toast } from "react-toastify";
+import { IUpdateSchoolPayload } from "../../types/school.type";
 
 type TProps = {
   onClose?: () => void;
+  isEditable: boolean;
+  schoolId: string;
 };
 
-const AddSchoolForm: React.FC<TProps> = ({ onClose }) => {
+const SchoolForm: React.FC<TProps> = ({ onClose, isEditable, schoolId }) => {
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -21,7 +25,6 @@ const AddSchoolForm: React.FC<TProps> = ({ onClose }) => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -30,20 +33,84 @@ const AddSchoolForm: React.FC<TProps> = ({ onClose }) => {
     }));
   };
 
-  console.info(formData);
+  const fetchSchools = async () => {
+    try {
+      const response = await SchoolService.getSchoolById(schoolId);
+      const { success, school, message } = response;
+      if (success) {
+        const formattedData = {
+          name: school.name,
+          address: school.address,
+          pincode: school.pincode,
+          city: school.city,
+          state: school.state,
+          country: school.country,
+        }
+        setFormData(formattedData);
+        console.log("Updated formData-----:", formattedData);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.error('Error fetching schools:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    if (isEditable) {
+      fetchSchools();
+    }
+  }, [isEditable, schoolId]);
+
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(null); // Clear previous errors
+    setError(null);
 
     const { name, address, pincode, city, state, country } = formData;
-
-    // Basic validation
     if (!name || !address || !pincode || !city || !state || !country) {
       setError("All fields are required.");
       return;
     }
+    const payload: IUpdateSchoolPayload = {
+      name,
+      address,
+      pincode,
+      city,
+      state,
+      country,
+    };
+    try {
+      setLoading(true);
+      const result = await SchoolService.updateSchool(payload, schoolId);
+      console.log(result);
 
+      const { success, message } = result;
+      console.log(success);
+      if (success) {
+        toast.success(result.message);
+        if (onClose) onClose();
+      }
+      else {
+        toast.error(result.message);
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to update school. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+
+    const { name, address, pincode, city, state, country } = formData;
+    if (!name || !address || !pincode || !city || !state || !country) {
+      setError("All fields are required.");
+      return;
+    }
     const payload: IAddSchoolPayload = {
       name,
       address,
@@ -52,15 +119,16 @@ const AddSchoolForm: React.FC<TProps> = ({ onClose }) => {
       state,
       country,
     };
-
-    console.log(payload);
-    
-
     try {
       setLoading(true);
       const result = await SchoolService.AddSchool(payload);
-      alert(result.message || "School added successfully!");
-      if (onClose) onClose(); // Close the modal on success
+      if (result.success) {
+        toast.success(result.message)
+        if (onClose) onClose();
+      }
+      else {
+        toast.error(result.message);
+      }
     } catch (err: any) {
       setError(err.message || "Failed to add school. Please try again.");
     } finally {
@@ -72,7 +140,9 @@ const AddSchoolForm: React.FC<TProps> = ({ onClose }) => {
     <>
       {/* Close Icon */}
       <div className="flex justify-between bg-slate-500 p-[17px]">
-        <h3 className="text-2xl font-medium">Add School Form</h3>
+        <h3 className="text-2xl font-medium">{
+          isEditable ? "Edit School" : "Add New School"
+        }</h3>
         <MdClose size={24} onClick={onClose} className="cursor-pointer" />
       </div>
       {/* Form */}
@@ -132,7 +202,9 @@ const AddSchoolForm: React.FC<TProps> = ({ onClose }) => {
             <Button
               type={BUTTON_TYPES.PRIMARY}
               btnText={loading ? "Submitting..." : "Submit"}
-              onClick={handleSubmit}
+              onClick={
+                isEditable ? handleUpdate : handleSubmit
+              }
             // disabled={loading}
             />
           </div>
@@ -142,4 +214,4 @@ const AddSchoolForm: React.FC<TProps> = ({ onClose }) => {
   );
 };
 
-export default AddSchoolForm;
+export default SchoolForm;
