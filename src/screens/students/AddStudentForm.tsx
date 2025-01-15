@@ -5,7 +5,9 @@ import { BUTTON_TYPES } from "../../components/button/data/button";
 import DropDwon, { TOption } from '../../components/drop-down/index'
 import { IAddStudentPayload } from "../../types";
 import * as StudentService from "../../service/student.service";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { IUpdateStudentPayload } from "../../types/student.type";
 
 
 const opetionsData: TOption[] = [
@@ -32,11 +34,13 @@ const opetionsData: TOption[] = [
 ]
 
 type TProps = {
-    onClose?: () => void;
+  onClose?: () => void;
+  isEditable: boolean;
+  studentId: string;
   };
 
 
-const AddStudentForm: React.FC<TProps> = ({onClose}) =>{
+const AddStudentForm: React.FC<TProps> = ({onClose, isEditable, studentId}) =>{
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -48,8 +52,8 @@ const AddStudentForm: React.FC<TProps> = ({onClose}) =>{
         state: "",
         country: "",
         classes: "",
-        section: "",
         rollNumber: "",
+        section: "",
       });
       const [loading, setLoading] = useState(false);
       const [error, setError] = useState<string | null>(null);
@@ -62,13 +66,97 @@ const AddStudentForm: React.FC<TProps> = ({onClose}) =>{
         }));
       };
     
-      console.info(formData);
+   const fetchStudent = async () => {
+         try {
+           const response = await StudentService.getStudentById(studentId);
+           const { success, student, message } = response;
+           if (success) {
+             const formattedData = {
+               name: student.name, 
+               email: student.email,
+               phone: student.phone,
+               password: student.password,
+               address: student.address,
+               pincode: student.pincode,
+               city: student.city,
+               state: student.state,
+               country: student.country,
+               classes: student.classes,
+               rollNumber: student.rollNumber,
+               section: student.section,
+             }
+             setFormData(formattedData);
+             console.log("Updated formData-----:", formattedData);
+           } else {
+             toast.error(message);
+           }
+         } catch (error) {
+           console.error('Error fetching teachers:', error);
+         } finally {
+           setLoading(false);
+         }
+       };
+     
+       useEffect(() => {
+         if (isEditable) {
+           fetchStudent();
+         }
+       }, [isEditable, studentId]);
+     
+       const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+         e.preventDefault();
+         setError(null);
+     
+         const { name,classes,section ,rollNumber,email,phone,password, address, pincode, city, state, country } = formData;
+    
+         // Basic validation
+         if (!name || !email || !phone || !password || !address || !pincode || !city || !state || !country) {
+           setError("All fields are required.");
+           return;
+         }
+
+         const payload: IUpdateStudentPayload = {
+           name,
+           email,
+           phone: parseInt(phone, 10),
+           password,
+           avatar: '',
+           address,
+           pincode,
+           city,
+           state,
+           country,
+           classes,
+        rollNumber,
+        section,
+         };
+         try {
+           setLoading(true);
+           const result = await  StudentService.updateStudent(payload, studentId);
+           console.log(result);
+     
+           const { success, message } = result;
+           console.log(success);
+           if (success) {
+             toast.success(result.message);
+             if (onClose) onClose();
+           }
+           else {
+             toast.error(result.message);
+           }
+         } catch (err: any) {
+           setError(err.message || "Failed to update school. Please try again.");
+         } finally {
+           setLoading(false);
+         }
+       };
+   
     
       const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError(null); // Clear previous errors
     
-        const { name,classes,section,rollNumber,email,phone,password, address, pincode, city, state, country } = formData;
+        const { name,classes,section ,rollNumber,email,phone,password, address, pincode, city, state, country } = formData;
     
         // Basic validation
         if (!name || !email || !phone || !password || !address || !pincode || !city || !state || !country) {
@@ -117,6 +205,16 @@ const AddStudentForm: React.FC<TProps> = ({onClose}) =>{
         <div className="bg-white p-6 shadow-b-lg">
           <form onSubmit={handleSubmit} className="w-full ">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4   rounded-lg ">
+              
+            <div className="">
+                <Input
+                  label="Roll Number"
+                  placeholderText="Enter Roll Number"
+                  name="rollNumber"
+                  onChangeText={handleChange}
+                  value={formData.rollNumber}
+                />
+              </div>
               <div className="">
                 <Input
                   label="Name"
@@ -222,7 +320,9 @@ const AddStudentForm: React.FC<TProps> = ({onClose}) =>{
         <Button
               type={BUTTON_TYPES.PRIMARY}
               btnText={loading ? "Submitting..." : "Submit"}
-              onClick={handleSubmit}
+              onClick={
+                isEditable ? handleUpdate : handleSubmit
+              }
             />
         </div>
         </form>

@@ -1,70 +1,37 @@
 import Button from "../../components/button/index";
 import { BUTTON_TYPES } from "../../components/button/data/button";
 import DataTable from "react-data-table-component";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RightSideDrawer from "../../components/right-side-drawer";
+import { toast, ToastContainer } from "react-toastify";
+import * as ParentService from "../../service/parent.service";
 import AddParentsForm from "./AddParents";
 
-const DropDown = () => {
-  const [openMenu, setOpenMenu] = useState(false);
-  const toggleMenu = () => {
-    console.log("juhghhjbh");
-
-    setOpenMenu(!openMenu);
-  };
-  return (
-    <>
-      <div className="relative cursor-pointer" onClick={() => toggleMenu()}>
-        <div className="flex">
-          <BsThreeDotsVertical size={22} />
-        </div>
-      </div>
-      {openMenu ? (
-        <div
-          className=" flex flex-col items-center
-         justify-center min-h-[100px] min-w-[120px] 
-         top-[40px] -left-[126px] absolute z-40
-          bg-headingTxt  rounded-md p-1"
-        >
-          <ul>
-            <li
-              className="flex gap-2 justify-between items-center
-             cursor-pointer bg-slate-100 py-1 px-2 rounded-sm 
-             mb-2 opacity-85"
-            >
-              <span className="text-lg font-semibold">Edit</span>
-              <FiEdit size={20} color="#22c55e" />
-            </li>
-            <li
-              className="flex gap-2 justify-between 
-            items-center cursor-pointer bg-slate-100
-             py-1 px-2 rounded-sm opacity-85"
-            >
-              <span className="text-lg font-semibold">Delete</span>
-              <AiOutlineDelete size={22} color="#FF0000" />
-            </li>
-          </ul>
-        </div>
-      ) : null}
-    </>
-  );
-};
+interface IParentIdProps {
+  parentId: string;
+}
 
 interface Row {
   name: string;
-  nativeName: string;
-  capital: string;
   avatar: string;
-  icon?: React.ReactNode;
+  email: string;
+  phone: string;
+  city: string;
+  state: string;
+  pincode: string;
+  classes: string;
+  rollNumber: string;
+  parentType: string;
   action?: any;
 }
 
 interface Column {
   name: string;
   selector: (row: Row) => string | JSX.Element;
+  width?: String;
+  maxWidth?: String;
 }
 
 const columns: Column[] = [
@@ -83,135 +50,27 @@ const columns: Column[] = [
   },
   {
     name: "School Name",
-    selector: (row: Row) => row.nativeName,
+    selector: (row: Row) => row.name,
   },
   {
     name: "City",
-    selector: (row: Row) => row.capital,
+    selector: (row: Row) => row.city,
   },
   {
     name: "State",
-    selector: (row: Row) => row.capital,
+    selector: (row: Row) => row.state,
   },
   {
     name: "Pincode",
-    selector: (row: Row) => row.capital,
+    selector: (row: Row) => row.pincode,
   },
   {
-    name: "Principals",
-    selector: (row: Row) => row.capital,
+    name: "Parent Type",
+    selector: (row: Row) => row.parentType,
   },
   {
     name: "Action",
     selector: (row: Row) => row.action,
-  },
-];
-
-const rows: Row[] = [
-  {
-    avatar: "W",
-    name: "United States",
-    nativeName: "United States",
-    capital: "Washington, D.C.",
-    action: <DropDown />,
-  },
-  {
-    avatar: "W",
-    name: "Germany",
-    nativeName: "Deutschland",
-    capital: "Berlin",
-    action: <DropDown />,
-  },
-  {
-    avatar: "W",
-    name: "Japan",
-    nativeName: "日本",
-    capital: "Tokyo",
-    action: <DropDown />,
-  },
-  {
-    avatar: "W",
-    name: "Brazil",
-    nativeName: "Brasil",
-    capital: "Brasília",
-    action: <DropDown />,
-  },
-  {
-    avatar: "W",
-    name: "India",
-    nativeName: "भारत",
-    capital: "New Delhi",
-    action: <DropDown />,
-  },
-  {
-    avatar: "W",
-    name: "United States",
-    nativeName: "United States",
-    capital: "Washington, D.C.",
-    action: <DropDown />,
-  },
-  {
-    avatar: "W",
-    name: "Germany",
-    nativeName: "Deutschland",
-    capital: "Berlin",
-    action: <DropDown />,
-  },
-  {
-    avatar: "W",
-    name: "Japan",
-    nativeName: "日本",
-    capital: "Tokyo",
-    action: <DropDown />,
-  },
-  {
-    avatar: "W",
-    name: "Brazil",
-    nativeName: "Brasil",
-    capital: "Brasília",
-    action: <DropDown />,
-  },
-  {
-    avatar: "W",
-    name: "India",
-    nativeName: "भारत",
-    capital: "New Delhi",
-    action: <DropDown />,
-  },
-  {
-    avatar: "W",
-    name: "United States",
-    nativeName: "United States",
-    capital: "Washington, D.C.",
-    action: <DropDown />,
-  },
-  {
-    avatar: "W",
-    name: "Germany",
-    nativeName: "Deutschland",
-    capital: "Berlin",
-    action: <DropDown />,
-  },
-  {
-    avatar: "W",
-    name: "Japan",
-    nativeName: "日本",
-    capital: "Tokyo",
-    action: <DropDown />,
-  },
-  {
-    avatar: "W",
-    name: "Brazil",
-    nativeName: "Brasil",
-    capital: "Brasília",
-    action: <DropDown />,
-  },
-  {
-    avatar: "W",
-    name: "India",
-    nativeName: "भारत",
-    capital: "New Delhi",
-    action: <DropDown />,
   },
 ];
 
@@ -241,6 +100,80 @@ const customStyles = {
 
 const ParentsList = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+    const [data, setData] = useState<Row[]>([]);
+      const [edit, setEdit] = useState<boolean>(false);
+      const [parentId, setParentId] = useState<string>("");
+   const fetchParent = async () => {
+        try {
+          const response = await ParentService.getAllParent();
+          const { parents, success, message } = response;
+  
+          if (success) {
+            const formattedData = parents.map((parent) => ({
+              name: parent.name,
+              email: parent.email,
+              phone: parent.phone,
+              city: parent.city,
+              state: parent.state,
+              pincode: parent.pincode,
+              classes: parent.classes,
+              parentType: parent.parentType,
+              action: <ActionButtons parentId={parent._id} />,
+            }));
+            setData(formattedData);
+            toast.success(message);
+          } else {
+            toast.error("Failed to fetch teachers.");
+          }
+        } catch (error) {
+          toast.error("Error fetching teachers.");
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+     const handleDelete = async (studentId: string) => {
+         try {
+           const response = await ParentService.deleteParent(studentId);
+           if (response.success) {
+            fetchParent();
+             toast.success(response.message);
+           } else {
+             toast.error(response.message);
+           }
+     
+         } catch (error) {
+           toast.error(error);
+         }
+       }
+     
+     
+       const ActionButtons: React.FC<IParentIdProps> = ({ parentId }) => {
+         return (
+           <div className="flex items-center">
+             <FiEdit
+               onClick={() => {
+                 setShowModal(true)
+                 setEdit(true)
+                 setParentId(parentId)
+               }}
+               size={36}
+               className="text-blue-500 cursor-pointer p-2 hover:bg-blue-100 rounded-lg transition-all ease-linear duration-200"
+             />
+             <AiOutlineDelete
+               onClick={() => handleDelete(parentId)}
+               size={34}
+               className="text-red-500 cursor-pointer p-1 hover:bg-red-100 rounded-lg transition-all ease-linear duration-200"
+             />
+           </div>
+         );
+       };
+     
+       useEffect(() => {
+        fetchParent();
+       }, [showModal]);
+       
   return (
     <>
       <div className="p-3 md:p-8  ">
@@ -248,14 +181,19 @@ const ParentsList = () => {
           <span className="text-xl font-semibold text-headingTxt">
             Total Parents&nbsp;:&nbsp;2
           </span>
-          <Button type={BUTTON_TYPES.PRIMARY} btnText="Add Parents" onClick={()=>setShowModal(true)}/>
+          <Button type={BUTTON_TYPES.PRIMARY} btnText="Add Parents" 
+          onClick={()=>{setShowModal(true) 
+            setEdit(false)
+            setParentId('')
+          }}
+          />
          
          
         </div>
         <div className="p-2 shadow-md">
           <DataTable
             columns={columns as any}
-            data={rows}
+            data={data}
             //   selectableRows
             selectableRowsHighlight
             highlightOnHover
@@ -267,8 +205,26 @@ const ParentsList = () => {
         </div>
       </div>
       <RightSideDrawer isOpen={showModal}>
-        <AddParentsForm onClose={() => {setShowModal(false)}} />
+        <AddParentsForm
+          onClose={() => {
+            setShowModal(false);
+          }}
+          isEditable={edit}
+          parentId={parentId}
+        />
       </RightSideDrawer>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
   );
 };

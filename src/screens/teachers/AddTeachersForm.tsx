@@ -3,16 +3,18 @@ import Input from "../../components/input";
 import Button from "../../components/button/index";
 import { BUTTON_TYPES } from "../../components/button/data/button";
 // import { PiFileArrowUpLight } from "react-icons/pi";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as TeacherService from "../../service/teacher.service";
-import { IAddTeacherPayload } from "../../types/teacher.types";
+import { IAddTeacherPayload, IUpdateTeacherPayload } from "../../types/teacher.types";
 import { toast, ToastContainer } from "react-toastify";
 
 type TProps = {
   onClose?: () => void;
+  isEditable: boolean;
+  teacherId: string;
 };
 
-const AddTeacherFrom: React.FC<TProps> = ({ onClose }) => {
+const AddTeacherFrom: React.FC<TProps> = ({ onClose, isEditable, teacherId }) => {
   const imageInputRef = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState("");
 
@@ -52,7 +54,84 @@ const AddTeacherFrom: React.FC<TProps> = ({ onClose }) => {
     }));
   };
 
-  console.info(formData);
+    const fetchTeachers = async () => {
+      try {
+        const response = await TeacherService.getTeacherById(teacherId);
+        const { success, teachers, message } = response;
+        if (success) {
+          const formattedData = {
+            name: teachers.name, 
+            email: teachers.email,
+            phone: teachers.phone,
+            password: teachers.password,
+            address: teachers.address,
+            pincode: teachers.pincode,
+            city: teachers.city,
+            state: teachers.state,
+            country: teachers.country,
+            qualification: teachers.qualification,
+          }
+          setFormData(formattedData);
+          console.log("Updated formData-----:", formattedData);
+        } else {
+          toast.error(message);
+        }
+      } catch (error) {
+        console.error('Error fetching teachers:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    useEffect(() => {
+      if (isEditable) {
+        fetchTeachers();
+      }
+    }, [isEditable, teacherId]);
+  
+    const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setError(null);
+  
+      const { name, email, phone, password, qualification, address, pincode, city, state, country } = formData;
+
+      if (!name || !email || !phone || !password || !qualification || !address || !pincode || !city || !state || !country) {
+        setError("All fields are required.");
+        return;
+      }
+      const payload: IUpdateTeacherPayload = {
+        name,
+        email,
+        phone: parseInt(phone, 10),
+        password,
+        avatar: '',
+        address,
+        pincode,
+        city,
+        state,
+        country,
+        qualification,
+      };
+      try {
+        setLoading(true);
+        const result = await TeacherService.updateTeacher(payload, teacherId);
+        console.log(result);
+  
+        const { success, message } = result;
+        console.log(success);
+        if (success) {
+          toast.success(result.message);
+          if (onClose) onClose();
+        }
+        else {
+          toast.error(result.message);
+        }
+      } catch (err: any) {
+        setError(err.message || "Failed to update school. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -212,7 +291,9 @@ const AddTeacherFrom: React.FC<TProps> = ({ onClose }) => {
             <Button
               type={BUTTON_TYPES.PRIMARY}
               btnText={loading ? "Submitting..." : "Submit"}
-              onClick={handleSubmit}
+              onClick={
+                isEditable ? handleUpdate : handleSubmit
+              }
             />
           </div>
         </form>

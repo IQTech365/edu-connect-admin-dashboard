@@ -1,76 +1,23 @@
 import Button from "../../components/button/index";
 import { BUTTON_TYPES } from "../../components/button/data/button";
 import DataTable from "react-data-table-component";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 import React, { useEffect, useState } from "react";
 import RightSideDrawer from "../../components/right-side-drawer";
-import AddTeacherForm from "./AddTeachersForm";
 import * as TeacherService from "../../service/teacher.service";
 import { ToastContainer, toast } from 'react-toastify';
 
+import AddTeacherFrom from "./AddTeachersForm";
 
-interface DropDownProps {
+
+interface ITeacherIdProps {
   teacherId: string;
 }
 
-
-const handleDeleteTeacher = async (teacherId: string) => {
-  try {
-    console.log("Deleting teacher with ID:", teacherId);
-    await TeacherService.deleteTeacher(teacherId);
-    toast.success("Teacher deleted successfully");
-  } catch (error) {
-    toast.error(error.message);
-  }
-};
-const DropDown: React.FC<DropDownProps> = ({ teacherId }) => {
-  const [openMenu, setOpenMenu] = useState(false);
-  const toggleMenu = () => {
-    setOpenMenu(!openMenu);
-  };
-  return (
-    <>
-      <div className="relative cursor-pointer" onClick={() => toggleMenu()}>
-        <div className="flex">
-          <BsThreeDotsVertical size={22} />
-        </div>
-      </div>
-      {openMenu ? (
-        <div
-          className=" flex flex-col items-center
-           justify-center min-h-[100px] min-w-[120px] 
-           top-[40px] -left-[126px] absolute z-40
-            bg-headingTxt  rounded-md p-1"
-        >
-          <ul>
-            <li
-              className="flex gap-2 justify-between items-center
-               cursor-pointer bg-slate-100 py-1 px-2 rounded-sm 
-               mb-2 opacity-85"
-            >
-              <span className="text-lg font-semibold">Edit</span>
-              <FiEdit size={20} color="#22c55e" />
-            </li>
-            <li
-              className="flex gap-2 justify-between 
-              items-center cursor-pointer bg-slate-100
-               py-1 px-2 rounded-sm opacity-85"
-              onClick={() => handleDeleteTeacher(teacherId)}
-            >
-              <span className="text-lg font-semibold">Delete</span>
-              <AiOutlineDelete size={22} color="#FF0000" />
-            </li>
-          </ul>
-        </div>
-      ) : null}
-    </>
-  );
-};
-
 interface Row {
   name: string;
+  avatar: string;
   email: string;
   phone: string;
   city: string;
@@ -82,9 +29,25 @@ interface Row {
 interface Column {
   name: string;
   selector: (row: Row) => string | JSX.Element;
+  width?: String;
+  maxWidth?: String;
 }
 
 const columns: Column[] = [
+  {
+    name: "Avatar",
+    selector: (row: Row) => (
+      <div
+        className={
+          "rounded-md flex justify-center items-center bg-slate-100 h-9 w-9 p-2"
+        }
+      >
+        {" "}
+        <span className=" text-lg font-semibold">{row.avatar}</span>
+      </div>
+    ),
+    width: "80px",
+  },
   {
     name: "Teacher Name",
     selector: (row: Row) => row.name,
@@ -142,9 +105,10 @@ const TeachersList = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<Row[]>([]);
+    const [edit, setEdit] = useState<boolean>(false);
+    const [teacherId, setTeacherId] = useState<string>("");
 
-  useEffect(() => {
-    const fetchTeachers = async () => {
+    const fetchTeacher = async () => {
       try {
         const response = await TeacherService.getAllTeachers();
         const { teachers, success, message } = response;
@@ -157,7 +121,7 @@ const TeachersList = () => {
             city: teacher.city,
             state: teacher.state,
             pincode: teacher.pincode,
-            action: <DropDown teacherId={teacher._id} />,
+            action: <ActionButtons teacherId={teacher._id} />,
           }));
           setData(formattedData);
           toast.success(message);
@@ -171,10 +135,49 @@ const TeachersList = () => {
       }
     };
 
-    fetchTeachers();
-
-  }, [showModal,handleDeleteTeacher]);
-
+   const handleDelete = async (teacherId: string) => {
+       try {
+         console.log("handle Delete is Clickeddd...!!!");
+         const response = await TeacherService.deleteTeacher(teacherId);
+         if (response.success) {
+           fetchTeacher();
+           toast.success(response.message);
+         } else {
+           toast.error(response.message);
+         }
+   
+       } catch (error) {
+         toast.error(error);
+       }
+     }
+   
+   
+     const ActionButtons: React.FC<ITeacherIdProps> = ({ teacherId }) => {
+       return (
+         <div className="flex items-center">
+           <FiEdit
+             onClick={() => {
+               setShowModal(true)
+               setEdit(true)
+               setTeacherId(teacherId)
+             }}
+             size={36}
+             className="text-blue-500 cursor-pointer p-2 hover:bg-blue-100 rounded-lg transition-all ease-linear duration-200"
+           />
+           <AiOutlineDelete
+             onClick={() => handleDelete(teacherId)}
+             size={34}
+             className="text-red-500 cursor-pointer p-1 hover:bg-red-100 rounded-lg transition-all ease-linear duration-200"
+           />
+         </div>
+       );
+     };
+   
+     useEffect(() => {
+      fetchTeacher();
+     }, [showModal]);
+   
+   
 
   return (
     <>
@@ -186,12 +189,15 @@ const TeachersList = () => {
           <Button
             type={BUTTON_TYPES.PRIMARY}
             btnText="Add Teacher"
-            onClick={() => setShowModal(true)}
+            onClick={() => {setShowModal(true)
+              setEdit(false)
+              setTeacherId('')
+            }}
           />
         </div>
         <div className="p-2 shadow-md">
           <DataTable
-            columns={columns}
+            columns={columns as any}
             data={data}
             selectableRowsHighlight
             highlightOnHover
@@ -203,10 +209,12 @@ const TeachersList = () => {
         </div>
       </div>
       <RightSideDrawer isOpen={showModal}>
-        <AddTeacherForm
+        <AddTeacherFrom
           onClose={() => {
             setShowModal(false);
           }}
+          isEditable={edit}
+          teacherId={teacherId}
         />
       </RightSideDrawer>
       <ToastContainer

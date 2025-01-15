@@ -9,7 +9,9 @@ export interface IAddStudentPayload {
     city: string;
     state: string;
     country: string;
-    qualification: string;
+    classes: string;
+    rollNumber: string;
+    section: string;
 };
 
 export interface IAddStudentResponse {
@@ -20,7 +22,7 @@ export interface IAddStudentResponse {
 
 export interface IGetAllStudentResponse {
     count: number;
-    teachers: any[];
+    students: any[];
     success: boolean;
     message: string;
 }
@@ -28,4 +30,32 @@ export interface IGetAllStudentResponse {
 export interface IDeleteStudentResponse {
     success: boolean;
     message: string;
+}
+
+export interface IUpdateStudentPayload {
+    name: string;
+    email: string;
+    phone: number;
+    password: string;
+    avatar: string;
+    address: string;
+    pincode: string;
+    city: string;
+    state: string;
+    country: string;
+    classes: string;
+    rollNumber: string;
+    section: string;
+};
+
+export interface IUpdateStudentResponse {
+    message: string,
+    success: boolean,
+}
+
+export interface IGetStudentByIdResponse {
+    success: boolean;
+    message: string;
+    error: string;
+    student: any;
 }

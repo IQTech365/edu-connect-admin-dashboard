@@ -82,10 +82,6 @@ export interface IAddStudentPayload {
     // avatar: string;
 };
 
-
-
-
-
 // 
 export interface IAddStudentResponse {
     message: string;
@@ -114,25 +110,25 @@ export interface IPrincipalResponse {
 }
 
 
-// Parent interface
-export interface IAddParentPayload {
-    name: string;
-    email: string;
-    phone: number;
-    password: string;
-    avatar: string;
-    address: string;
-    pincode: number;
-    city: string;
-    state: string;
-    country: string;
-    school: any;
-}
+// // Parent interface
+// export interface IAddParentPayload {
+//     name: string;
+//     email: string;
+//     phone: number;
+//     password: string;
+//     avatar: string;
+//     address: string;
+//     pincode: number;
+//     city: string;
+//     state: string;
+//     country: string;
+//     school: any;
+// }
 
-export interface IParentResponse {
-    message: string;
-    success: boolean;
-}
+// export interface IParentResponse {
+//     message: string;
+//     success: boolean;
+// }
 
 /**
  * ************************************************************
