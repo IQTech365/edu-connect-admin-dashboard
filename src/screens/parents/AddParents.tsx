@@ -270,7 +270,6 @@ const AddParentsForm: React.FC<TProps> = ({ onClose, isEditable, parentId }) => 
                value={formData.address}
                onChange={handleChange}/>
           </div>
-        </form>
         <div className="flex items-center justify-center my-2">
         <Button
               type={BUTTON_TYPES.PRIMARY}
@@ -280,6 +279,7 @@ const AddParentsForm: React.FC<TProps> = ({ onClose, isEditable, parentId }) => 
               }
             />
         </div>
+        </form>
       </div>
     </>
   );

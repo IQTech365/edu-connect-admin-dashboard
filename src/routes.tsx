@@ -18,6 +18,10 @@ import ProductList from "./screens/add-product";
 import OrderDetails from "./screens/order-details/OrderDetails";
 import Login from "./screens/login/Login";
 import ProtectedRoute from "./ProtectedRoutes";
+import AddSubjectsForm from "./screens/subjects/AddSubjects";
+import SubjectsList from "./screens/subjects";
+import ClassesList from "./screens/classes";
+import AddClassesForm from "./screens/classes/AddClasses";
 
 const routes = createBrowserRouter([
   { path: "/", element: <Login /> },
@@ -55,8 +59,24 @@ const routes = createBrowserRouter([
         element: <TeachersList />,
       },
       {
-        path: "/dashboard/add-teachers",
+        path: "/dashboard/add-subjects",
         element: <AddTeacherFrom />,
+      },
+      {
+        path: "/dashboard/subjects-list",
+        element: <SubjectsList />,
+      },
+      {
+        path: "/dashboard/add-classes",
+        element: <AddClassesForm />,
+      },
+      {
+        path: "/dashboard/classes-list",
+        element: <ClassesList />,
+      },
+      {
+        path: "/dashboard/add-teachers",
+        element: <AddSubjectsForm />,
       },
       {
         path: "/dashboard/students-list",

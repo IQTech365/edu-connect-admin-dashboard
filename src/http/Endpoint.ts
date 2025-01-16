@@ -35,10 +35,35 @@ const DELETE_PARENT = (id: string) => `/parent/parent-remove/${id}`;
 const GET_PARENT_BY_ID = (id: string) => `/parent/get-by-parentId/${id}`;
 const UPDATE_PARENT_BY_ID = (id: string) => `/parent/update-parent/${id}`;
 
+// Subject----
+const ADD_SUBJECT: string = `/subject/add-subject`;
+const GET_ALL_SUBJECT: string = `/subject/get-all-subject`;
+const DELETE_SUBJECT = (id: string) => `/subject/subject-remove/${id}`;
+const GET_SUBJECT_BY_ID = (id: string) => `/subject/get-by-subjectId/${id}`;
+const UPDATE_SUBJECT_BY_ID = (id: string) => `/subject/update-subject/${id}`;
+
+// Classes----
+const ADD_CLASSES: string = `/class/add-class`;
+const GET_ALL_CLASSES: string = `/class/get-all-class`;
+const DELETE_CLASSES = (id: string) => `/class/class-remove/${id}`;
+const GET_CLASSES_BY_ID = (id: string) => `/class/get-by-classId/${id}`;
+const UPDATE_CLASSES_BY_ID = (id: string) => `/class/update-by-class/${id}`;
 
 export {
 
     SIGNIN,
+
+    ADD_CLASSES,
+    GET_ALL_CLASSES,
+    DELETE_CLASSES,
+    GET_CLASSES_BY_ID,
+    UPDATE_CLASSES_BY_ID,
+
+    ADD_SUBJECT,
+    GET_ALL_SUBJECT,
+    DELETE_SUBJECT,
+    GET_SUBJECT_BY_ID,
+    UPDATE_SUBJECT_BY_ID,
 
     ADD_PARENT,
     GET_ALL_PARENT,

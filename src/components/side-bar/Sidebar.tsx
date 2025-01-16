@@ -2,7 +2,7 @@ import { FaRegBuilding } from "react-icons/fa";
 import { MdOutlineDashboard } from "react-icons/md";
 import { GrUserManager } from "react-icons/gr";
 import { PiStudent, PiUserList } from "react-icons/pi";
-import { RiParentLine } from "react-icons/ri";
+import { RiClassesLine, RiParentLine, RiSubjectsLine } from "react-icons/ri";
 import { LuUserCog } from "react-icons/lu";
 import { GoChevronDown, GoChevronUp } from "react-icons/go";
 import { useState } from "react";
@@ -14,6 +14,8 @@ const Sidebar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [openStudenttab, setOpenStudentTab] = useState(false);
   const [openParentstab, setOpenParentsTab] = useState(false);
+  const [openClassestab, setOpenClassesTab] = useState(false);
+  const [openSubjectstab, setOpenSubjectsTab] = useState(false);
   const [openVendorsTab, setOpenVendorsTab] = useState(false)
 
   const handleToggle = () => {
@@ -25,6 +27,16 @@ const Sidebar = () => {
   const handleToggleParentTab = () => {
     setOpenParentsTab(!openParentstab);
   };
+
+  const handleToggleClassesTab = () => {
+    setOpenClassesTab(!openClassestab);
+  };
+
+  const handleToggleSubjectsTab = () => {
+    setOpenSubjectsTab(!openSubjectstab);
+  };
+
+  
   const handleToggleVendorsTab = () => {
     setOpenVendorsTab(!openVendorsTab)
   }
@@ -140,6 +152,71 @@ const Sidebar = () => {
           </div>
         ) : null}
       </ul>
+
+       {/* Classes tab */}
+      {/*  <ul className="mb-1">
+        <li
+          className="  p-2 bg-[#4D365B] rounded-md"
+          onClick={() => handleToggleClassesTab()}
+        >
+          <div className={"flex justify-between"}>
+            <div className="flex items-center gap-2 ">
+              <RiClassesLine size={22} color="#fff" />
+              <span className="text-md text-white">Classes</span>
+            </div>
+            {openClassestab ? (
+              <GoChevronUp size={22} color="#fff"/>
+            ) : (
+              <GoChevronDown size={22} color="#fff" />
+            )}
+          </div>
+        </li>
+        {openClassestab ? (
+          <div className="rounded-md bg-gray-300  p-2 ">
+            <ul>
+              <NavLink to={"parents-list"}>
+                <li className="flex items-center gap-2 cursor-pointer p-1 bg-[#b997cd] rounded-md m-b text-[#4D365B]">
+                  <RiClassesLine size={22} color="#4D365B" />
+                  Classes List
+                </li>
+              </NavLink>
+            </ul>
+          </div>
+        ) : null}
+      </ul>
+
+       {/* Subject tab */}
+      {/*  <ul className="mb-1">
+        <li
+          className="  p-2 bg-[#4D365B] rounded-md"
+          onClick={() => handleToggleSubjectsTab()}
+        >
+          <div className={"flex justify-between"}>
+            <div className="flex items-center gap-2 ">
+              <RiSubjectsLine size={22} color="#fff" />
+              <span className="text-md text-white">Subjects</span>
+            </div>
+            {openSubjectstab ? (
+              <GoChevronUp size={22} color="#fff"/>
+            ) : (
+              <GoChevronDown size={22} color="#fff" />
+            )}
+          </div>
+        </li>
+        {openSubjectstab ? (
+          <div className="rounded-md bg-gray-300  p-2 ">
+            <ul>
+              <NavLink to={"parents-list"}>
+                <li className="flex items-center gap-2 cursor-pointer p-1 bg-[#b997cd] rounded-md m-b text-[#4D365B]">
+                  <RiSubjectsLine size={22} color="#4D365B" />
+                  Subjects List
+                </li>
+              </NavLink>
+            </ul>
+          </div>
+        ) : null}
+      </ul> */}
+
  {/* Add Head of dept. tab */}
  <ul className="mb-1">
         <NavLink to={"head-of-dept-list"}>
